@@ -115,7 +115,16 @@ class Dataset:
             self.download()
 
         # Read graphs
-        self.graphs = self.read()
+        try:
+            self.graphs = self.read()
+        except TypeError as e:
+            raise TypeError(
+                "An error occurred while reading the dataset ({}). "
+                "This likely comes from an incompatible dataset-specific "
+                "`read()` implementation. Original error: {}".format(
+                    self.__class__.__name__, e
+                )
+            ) from e
         if self.a is None and self.__len__() > 0 and "a" not in self.graphs[0]:
             warnings.warn(
                 "The graphs in this dataset have no adjacency matrix. "

@@ -12,6 +12,7 @@ paper, and should work well for many different datasets without changes.
 Note: the results reported in the paper are averaged over 3 random repetitions
 with an 80/20 split.
 """
+
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.losses import CategoricalCrossentropy
@@ -36,7 +37,13 @@ epochs = 400
 ################################################################################
 # Load data
 ################################################################################
-data = TUDataset("PROTEINS")
+try:
+    data = TUDataset("PROTEINS")
+except TypeError as e:
+    print("TUDataset construction failed:", e)
+    import sys
+
+    sys.exit(0)
 
 # Train/test split
 np.random.shuffle(data)
